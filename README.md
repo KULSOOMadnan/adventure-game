@@ -25,11 +25,11 @@ Are you ready to test your mettle and prove your courage? Let the adventure begi
 
 </ul>
 <h1>Gameplay</h1>
-⋆ You'll start by entering your name.
-⋆ You'll find yourself in a dark dungeon facing various enemies such as Skeletons, Zombies, Warriors, and Assassins.
-⋆ You can choose to attack, drink health potions, or run away during battles.
-⋆ Defeat enemies to gain health potions and continue your adventure.
-⋆ Be careful not to let your health drop to zero, or your adventure will end!
+⋆ You'll start by entering your name.</br>
+⋆ You'll find yourself in a dark dungeon facing various enemies such as Skeletons, Zombies, Warriors, and Assassins.</br>
+⋆ You can choose to attack, drink health potions, or run away during battles.</br>
+⋆ Defeat enemies to gain health potions and continue your adventure.</br>
+⋆ Be careful not to let your health drop to zero, or your adventure will end!</br>
 
 <h2>npm usage🧧</h2>
 <p>The command for installing my package using npm is <b>"npm i adventure-game-by-kulsoom"</b>; 
