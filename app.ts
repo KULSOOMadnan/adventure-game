@@ -46,7 +46,7 @@ class Game{
     let health: number = 100;
     let attackDamage: number = 50;
     let numberOfHealthPotions: number = 4;
-    let healthPotionAmount: number = 30;
+    let healthPotionAmount: number = 15;
     let healthPerDropChance: number = 50;
 
     let running: boolean = true;
@@ -54,13 +54,13 @@ class Game{
     while (running) {
       let opponentHealth: number = Math.floor(random * maxEnemyHealth);
       let enemy = enemies[Math.floor(random * enemies.length)];
-      await slowtext(chalk.rgb(255, 218, 185)
+      await slowtext(chalk.rgb(216, 191, 216)
       
-      (`\t\n ${chalk.rgb(64, 224, 208)(this.playername.toUpperCase())} Enemy ${chalk.rgb(64, 224, 208)(enemy)} has appeared and he is your opponent\t\n`));
+      (`\t\n "${chalk.yellow(this.playername.toUpperCase())}" Enemy ${chalk.yellow(enemy)} has appeared and he is your opponent\t\n`));
 
       while (opponentHealth > 0) {
-        console.log(chalk.rgb(64, 224, 208)(`\n\t "${(this.playername.toUpperCase())}"  health : ${chalk.green(health)} 🔋`));
-        console.log(chalk.rgb(64, 224, 208)(`\t\n\t  👾 "${(enemy)}'s " health : ${chalk.redBright(opponentHealth)} \n`));
+        console.log(chalk.rgb(216, 191, 216)(`\n\t     "${(this.playername.toUpperCase())}" health: ${chalk.green(health)} 🔋`));
+        console.log(chalk.rgb(216, 191, 216)(`\t\n\t     "${(enemy)}'s" health: ${chalk.redBright(opponentHealth)} \n`));
 
         const answer = await action();
 
@@ -72,8 +72,8 @@ class Game{
             opponentHealth -= damageDealt;
             health -= damageTaken;
 
-            console.log(chalk.rgb(255, 218, 185)(`\n\t ${this.playername} you strike the Enemy ${enemy} for ${chalk.green(damageDealt)} damage.\n`));
-            console.log(chalk.rgb(255, 218, 185)(`\t You receive ${chalk.red(damageTaken)} damage in retaliation!`));
+            console.log(chalk.yellow(`\n    ${this.playername} you strike the Enemy ${enemy} for ${chalk.green(damageDealt)} damage.\n`));
+            console.log(chalk.yellow(`\t You receive ${chalk.red(damageTaken)} damage in retaliation!`));
             if (health < 1) {
               console.log(chalk.gray(`\n\tYou have taken too much damage you are too weak to go! \n`));
               running = false; // Set running to false to break out of the outer loop
@@ -82,18 +82,22 @@ class Game{
 
           case "Drink Health Potion":
             if (numberOfHealthPotions > 0) {
-              health += healthPotionAmount;
-              numberOfHealthPotions--;
-              console.log(chalk.rgb(255, 140, 0)(`\t\n${this.playername.toUpperCase()}  you drink a health potion for ${chalk.greenBright(healthPotionAmount)} ⚗️`))
-               console.log(chalk.rgb(255, 140, 0)(`\t\n${this.playername .toUpperCase()} you  Have now ${chalk.greenBright(health)} HP`));
-               console.log(chalk.rgb(255, 140, 0)(`\t\n ${this.playername .toUpperCase()}  you have ${chalk.greenBright(numberOfHealthPotions)} health Potion left ⚗️ `))
+              if(health <= 90  ){
+                health += healthPotionAmount;
+                numberOfHealthPotions--;
+               console.log(chalk.yellow(`\t\n\t${this.playername.toUpperCase()}  you drink a health potion for ${chalk.greenBright(healthPotionAmount)} ⚗️`))
+               console.log(chalk.yellow(`\t\n\t\t${this.playername .toUpperCase()} you  Have now ${chalk.greenBright(health)} HP`));
+               console.log(chalk.yellow(`\t\n\t${this.playername .toUpperCase()}  you have ${chalk.greenBright(numberOfHealthPotions)} health Potion left ⚗️ `))
                
                             
+              }else{
+                console.log(chalk.yellow.italic(`\n\t----Your HP is already full----\t`));
+                
+              }
+              
                            
             } else {
-              console.log( chalk.red
-                (`\t You have zero potions to drink. Defeat enemies to get a chance for one potion.\t\n`)
-              );
+              console.log( chalk.red(`\t\nYou have zero potions to drink. Defeat enemies to get a chance for one potion.\t\n`));
             }
             break;
 
@@ -109,7 +113,7 @@ class Game{
       }
       
       if (health < 2) {
-        await slowtext(chalk.red .italic(` You limp up from the dungeon, weak from battle .Better luck next time!`));
+        await slowtext(chalk.red .italic(`-----You limp up from the dungeon, weak from battle .Better luck next time!-----`));
         await slowtext(chalk.italic.magenta
           ( `\t\n________________________________________________________________________________\n\n`)
         );
@@ -117,21 +121,19 @@ class Game{
       }
       
       if (opponentHealth <= 0) {
-        await slowtext(chalk.rgb(255, 140, 0).bold(`\nCONGRATULATION ${this.playername.toUpperCase()}! 🎉 You won from ${enemy} 🏆🌟 \n`));
+        await slowtext(chalk.rgb(255, 140, 0).bold(`\n   CONGRATULATION ${this.playername.toUpperCase()}! 🎉 You won from ${enemy} 🏆🌟 \n`));
         
         console.log((chalk.red.bold(`\n\t\t${enemy} defeated!\n`)))
-        console.log(chalk.rgb(255, 218, 185)(`\t\tyou have ${chalk.green(health)} HP left!\t\n`));
+        console.log(chalk.yellow(`\t\tyou have ${chalk.green(health)} HP left!\t\n`));
         if (Math.random() * 100 > healthPerDropChance) {
           healthPotionAmount++;
-          console.log(chalk.yellow.bold(`\n\t The ${chalk.green(enemy)} dropped a health potion⚗️ !`));
+          console.log(chalk.yellow.bold(`\t The ${chalk.green(enemy)} dropped a health potion⚗️ !`));
           console.log(chalk.yellow.bold
-           ( `\n\t#--------Now you have  ${chalk.green(numberOfHealthPotions)} health portions ⚗️ !-------#`)
+           ( `\n\t#--------Now you have  ${chalk.green(numberOfHealthPotions)} health portions ⚗️ !-------#\n`)
           );
           
         }
-        await slowtext(chalk.italic.magenta
-        (  `\t\n______________________________________________________________\n\n`)
-        );
+      
 
         let confirmation = await askingToCon();
 
@@ -140,18 +142,14 @@ class Game{
 
         } else if (confirmation.ask === "want to continue") {
           console.log
-          (chalk.rgb(255, 182, 193).underline(`\t\n\t ${this.playername.toUpperCase()} you continue on your dungeon Adventure\n`));
+          (chalk.rgb(255, 182, 193)(`\t\n------- ${this.playername.toUpperCase()} you continue on your dungeon Adventure-------\n`));
 
         } else if (confirmation.ask === "Exit dungeon") {
           await slowtext(chalk.magenta(`\n\t<-------------${this.playername} You exit from dungeon adventure successfully---------->\n`));
-           await slowtext(chalk.magenta(`\n\t<---------------Thank you ${this.playername} for playing ✨------------------>\n`))
-           await slowtext(`\n\t\t❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌\n`)
-
-           running = false; // Set running to false to break out of the outer loop
+           await slowtext(chalk.magenta(`\n\t\t<-----------Thank you ${this.playername} for playing ✨----------->\n`))
+          running = false; // Set running to false to break out of the outer loop
         }
       }
-
-      
     }
   }
 }
@@ -169,7 +167,7 @@ async function Name() {
       {
         name: "player",
         type: "input",
-        message: chalk.rgb(216, 191, 216).italic("please enter your Good name❤︎ : "),
+        message: chalk.magenta.italic("please enter your Good name❤︎ : "),
         validate: (input) =>/^[A-Za-z]+$/.test(input)? true: "Please enter only alphabetical characters.",
       },
     ])
@@ -184,7 +182,7 @@ async function action() {
     {
       name: "Act",
       type: "list",
-      message: chalk.rgb(216, 191, 216).italic("what would you like to do ?"),
+      message: chalk.magenta.italic("what would you like to do ?"),
       choices: ["Attack", "Drink Health Potion", "Run"],
     },
   ]);
@@ -196,7 +194,7 @@ async function askingToCon() {
     {
       name: "ask",
       type: "list",
-      message: chalk.rgb(216, 191, 216).italic("what you wanna do"),
+      message: chalk.magenta.italic("what you wanna do"),
       choices: ["want to continue", "Exit dungeon"],
     },
   ]);
